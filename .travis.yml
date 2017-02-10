@@ -3,27 +3,22 @@ language:
 
 php:
   - 5.6
-  - 7.0
   - 7.1
-  - hhvm
   - nightly
-
-install:
-  composer install --prefer-dist
-
-branches:
-  only:
-    - master
 
 addons:
   code_climate:
     repo_token: $CODECLIMATE_REPO_TOKEN
 
+before_script:
+  - composer self-update
+  - composer install
+
 script:
-  phpunit --coverage-clover build/logs/clover.xml --configuration tests/phpunit.xml
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml --configuration phpunit.xml
 
 after_script:
-  - vendor/bin/test-reporter --coverage-report build/logs/clover.xml
+  - ./vendor/bin/test-reporter --coverage-report build/logs/clover.xml
 
 notifications:
   slack:
